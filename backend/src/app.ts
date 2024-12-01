@@ -15,15 +15,15 @@ dotenv.config(); // Chargement des variables d'environnement
 
 const app = express();
 
-/* use CORS middleware with options
-const corsOptions = {
-  origin: 'http://localhost:5173', 
-  methods: ['GET', 'POST'], 
-  allowedHeaders: ['Content-Type', 'Authorization'],    
-};
+if (process.env.NODE_ENV === "production") { 
+  const corsOptions = {
+    origin: "https://ecommerce-dashboard-i3dx.onrender.com/", 
+    methods: ['GET', 'POST'], 
+    allowedHeaders: ['Content-Type', 'Authorization'],    
+  };
 
-app.use(cors(corsOptions));
-*/
+  app.use(cors(corsOptions));
+}
 
 const midd = [
   bodyParser.urlencoded({
