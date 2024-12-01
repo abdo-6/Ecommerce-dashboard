@@ -45,7 +45,7 @@ connectMongoDB();
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "public")));
-  app.get('/', (req: Request, res: Response) => res.sendFile(__dirname + '/public/index.html'));
+  app.get(/.*/, (req: Request, res: Response) => res.sendFile(__dirname + '/public/index.html'));
 } else {
   app.get("/", (req: Request, res: Response) => {
     res.send("API IS RUNNING 🚀...");
@@ -54,9 +54,9 @@ if (process.env.NODE_ENV === "production") {
 
 
 // Routes pour les statistiques
-app.use('/api/analytics', analyticsRoutes);
+app.use('/analytics', analyticsRoutes);
 // Routes pour les produits
-app.use('/api/products', productRoutes);
+app.use('/products', productRoutes);
 
 
 app.use(notFound);
