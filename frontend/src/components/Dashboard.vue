@@ -82,11 +82,11 @@
       const loadStaticData = async () => {
 
         try {
-          const productsResponse = await fetch(`/api/analytics/trending_products`);
+          const productsResponse = await fetch(`https://ecommerce-dashboard-i3dx.onrender.com/analytics/trending_products`);
           trendingProducts.value = await productsResponse.json();  
 
           //   et des ventes par catégorie
-          const categoryResponse = await fetch(`/api/analytics/category_sales`);
+          const categoryResponse = await fetch(`https://ecommerce-dashboard-i3dx.onrender.com/analytics/category_sales`);
           categorySales.value = await categoryResponse.json();  
 
         } catch (error) {
@@ -98,7 +98,7 @@
 
       //  on met à jour les ventes totales en fonction de la période sélectionnée via l'API GET /analytics/total_sales
       const updatePeriod = async (period: string) => {
-        const salesResponse = await fetch(`/api/analytics/total_sales?period=${period}`);
+        const salesResponse = await fetch(`https://ecommerce-dashboard-i3dx.onrender.com/analytics/total_sales?period=${period}`);
         const salesData = await salesResponse.json();
         totalSales.value = salesData.total;  
       };
