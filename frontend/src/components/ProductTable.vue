@@ -102,7 +102,7 @@ export default defineComponent({
     const fetchProducts = async () => {
 
       try {
-        const response = await fetch(`https://ecommerce-dashboard-i3dx.onrender.com/products`);
+        const response = await fetch(`/api/products`);
         products.value = await response.json();
 
       } catch (error) {
