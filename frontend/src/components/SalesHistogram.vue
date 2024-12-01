@@ -31,7 +31,7 @@
 
       const loadSalesData = async () => {
 
-        const response = await fetch(`https://ecommerce-dashboard-i3dx.onrender.com/products`);
+        const response = await fetch(`/api/products`);
         const products = await response.json();
 
         const chartData = {
