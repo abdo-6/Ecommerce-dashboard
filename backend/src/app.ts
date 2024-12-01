@@ -1,69 +1,62 @@
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import path from "path";
+import path from 'path';
 
 import analyticsRoutes from './routes/analyticsRoutes';
 import productRoutes from './routes/productRoutes';
-import { connectMongoDB } from "./config/database";
-import { errorHandler, notFound } from "./middleware/errorHandler";
-import express, { Request, Response } from 'express';
+import { connectMongoDB } from './config/database';
+import { errorHandler, notFound } from './middleware/errorHandler';
+import express, { Request, Response, Application } from 'express';
 
-const bodyParser = require("body-parser");
+dotenv.config(); // Load environment variables
 
-dotenv.config(); // Chargement des variables d'environnement
+const app: Application = express();
 
-const app = express();
-
-if (process.env.NODE_ENV === "production") { 
+// CORS configuration
+if (process.env.NODE_ENV === 'production') {
   const corsOptions = {
-    origin: "https://ecommerce-dashboard-i3dx.onrender.com/", 
-    methods: ['GET', 'POST'], 
-    allowedHeaders: ['Content-Type', 'Authorization'],    
+    origin: 'https://ecommerce-dashboard-i3dx.onrender.com',
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   };
-
   app.use(cors(corsOptions));
+} else {
+  app.use(cors());
 }
 
-const midd = [
-  bodyParser.urlencoded({
-    extended: true,       //  for parsing URL-encoded data
-  }),
-  express.json(),
-  express.urlencoded({ extended: false }),
-  cors(),
-];
-
-// use Middleware
-app.use(midd);
+// Middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-
-
-//server connect
+// Connect to MongoDB
 connectMongoDB();
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "public")));
-  app.get(/.*/, (req: Request, res: Response) => res.sendFile(__dirname + '/public/index.html'));
+// API Routes
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/products', productRoutes);
+
+// Serve static files in production
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  // Serve the frontend's index.html for non-API routes
+  app.get('*', (req: Request, res: Response) => {
+    res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
+  });
 } else {
-  app.get("/", (req: Request, res: Response) => {
-    res.send("API IS RUNNING 🚀...");
+  // Simple route for development
+  app.get('/', (req: Request, res: Response) => {
+    res.send('API IS RUNNING 🚀...');
   });
 }
 
-
-// Routes pour les statistiques
-app.use('/analytics', analyticsRoutes);
-// Routes pour les produits
-app.use('/products', productRoutes);
-
-
+// Error handling middleware
 app.use(notFound);
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+// Start the server
+const port: string | number = process.env.PORT || 5000;
 app.listen(port, () => {
-  console.log(`🚀 Serveur en cours d'exécution sur le port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });
-
