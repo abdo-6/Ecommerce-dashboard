@@ -44,19 +44,30 @@ app.use(express.json());
 connectMongoDB();
 
 if (process.env.NODE_ENV === "production") {
+  // Servir les fichiers statiques de votre application frontend
   app.use(express.static(path.join(__dirname, "public")));
-  app.get(/.*/, (req: Request, res: Response) => res.sendFile(__dirname + '/public/index.html'));
+
+  // Gérer les requêtes aux routes API
+  app.use('/api', (req, res, next) => {
+    res.status(404).json({ error: "API route not found" }); // Retourne une erreur JSON si la route n'existe pas
+  });
+
+  // Rediriger toutes les autres routes vers index.html (SPA support)
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, "public", "index.html"));
+  });
 } else {
-  app.get("/", (req: Request, res: Response) => {
+  // En mode développement, une simple route pour vérifier si le serveur fonctionne
+  app.get("/", (req, res) => {
     res.send("API IS RUNNING 🚀...");
   });
 }
 
 
 // Routes pour les statistiques
-app.use('/analytics', analyticsRoutes);
+app.use('/api/analytics', analyticsRoutes);
 // Routes pour les produits
-app.use('/products', productRoutes);
+app.use('/api/products', productRoutes);
 
 
 app.use(notFound);
