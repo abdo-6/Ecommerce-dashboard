@@ -7,7 +7,7 @@
     <div class="flex justify-center items-center">
 
       <!-- canvas de l'histogramme pour illustrer les ventes par produit. -->
-      <canvas ref="chartCanvas" class="w-full h-192 max-w-6xl"></canvas>
+      <canvas ref="chartCanvas" class="w-full h-250 max-w-7xl"></canvas>
 
     </div>
 
