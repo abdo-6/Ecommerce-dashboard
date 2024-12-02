@@ -84,8 +84,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Routes API
-app.use('/analytics', analyticsRoutes); 
-app.use('/products', productRoutes); 
+app.use('/api/analytics', analyticsRoutes); 
+app.use('/api/products', productRoutes); 
 
 //  middleware de gestion des erreurs
 
