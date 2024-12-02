@@ -30,7 +30,7 @@ app.use(midd);
 if (process.env.NODE_ENV === 'production') {
 
     // Liste des origines autorisées en production (ajustez selon vos besoins)
-    const allowedOrigins = ['https://yourdomain1.com',]; 
+    const allowedOrigins = ['https://ecommerce-dashboard-i3dx.onrender.com',]; 
     
     const corsOptions = {
       origin: (origin: string | undefined, callback: (err: Error | null, allow: boolean) => void) => {
