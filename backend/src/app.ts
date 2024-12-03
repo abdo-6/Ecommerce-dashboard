@@ -38,6 +38,10 @@ app.use('/products', productRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
+  // API Routes
+  app.use('/api/analytics', analyticsRoutes);
+  app.use('/api/products', productRoutes);
+  
   app.use(express.static(path.join(__dirname, 'public')));
 
   // Serve the frontend's index.html for non-API routes
@@ -45,11 +49,15 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.resolve(__dirname, 'public', 'index.html'));
   });
 } else {
-  // Simple route for development
-  app.get('/', (req: Request, res: Response) => {
-    res.send('API IS RUNNING 🚀...');
-  });
-}
+    // API Routes
+    app.use('/analytics', analyticsRoutes);
+    app.use('/products', productRoutes);
+  
+    // Simple route for development
+    app.get('/', (req: Request, res: Response) => {
+      res.send('API IS RUNNING 🚀...');
+    });
+  }
 
 // Error handling middleware
 app.use(notFound);
