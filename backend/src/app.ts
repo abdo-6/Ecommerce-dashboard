@@ -32,9 +32,6 @@ app.use(express.urlencoded({ extended: false }));
 // Connect to MongoDB
 connectMongoDB();
 
-// API Routes
-app.use('/analytics', analyticsRoutes);
-app.use('/products', productRoutes);
 
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
